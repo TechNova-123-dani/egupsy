@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content_public %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card card-soft p-4">
+      <h3 class="mb-3">Admin Login</h3>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <button class="btn btn-egup" type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

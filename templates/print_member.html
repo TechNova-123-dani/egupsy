@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="no-print mb-3">
+  <a class="btn btn-egup" href="#" onclick="window.print()">Print</a>
+  <a class="btn btn-outline-egup" href="{{ url_for('admin_members') }}">Back</a>
+</div>
+
+<div class="card card-soft p-4">
+  <h3 class="mb-3">Member Profile</h3>
+  <div class="row g-3">
+    <div class="col-md-6"><strong>Name:</strong> {{ m.name }}</div>
+    <div class="col-md-6"><strong>Other Name:</strong> {{ m.other_name }}</div>
+    <div class="col-md-6"><strong>Location:</strong> {{ m.location }}</div>
+    <div class="col-md-6"><strong>Home Location:</strong> {{ m.home_location }}</div>
+    <div class="col-md-6"><strong>Phone:</strong> {{ m.phone }}</div>
+    <div class="col-md-6"><strong>Religion:</strong> {{ m.religion }}</div>
+    <div class="col-md-6"><strong>Church Name:</strong> {{ m.church_name }}</div>
+    <div class="col-md-6"><strong>Profession:</strong> {{ m.profession }}</div>
+    <div class="col-12"><strong>Skills:</strong> {{ m.skills }}</div>
+    <div class="col-12"><strong>Gifts:</strong> {{ m.gifts }}</div>
+    <div class="col-12"><strong>Experience:</strong> {{ m.experience }}</div>
+    <div class="col-12"><strong>Departments:</strong> {{ m.departments }}</div>
+  </div>
+
+  <h5 class="mt-4">Referees</h5>
+  <div class="row g-3">
+    {% for r in referees if r.name or r.location or r.phone %}
+    <div class="col-md-6">
+      <div class="p-3 rounded" style="background: rgba(255,255,255,0.1);">
+        <div><strong>Name:</strong> {{ r.name }}</div>
+        <div><strong>Location:</strong> {{ r.location }}</div>
+        <div><strong>Phone:</strong> {{ r.phone }}</div>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-muted">None provided.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

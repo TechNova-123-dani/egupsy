@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card card-soft p-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="fw-bold">Total Members</div>
+          <div class="display-6">{{ total }}</div>
+        </div>
+        <span class="badge bg-light text-dark badge-pill">All</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-soft p-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="fw-bold">Approved</div>
+          <div class="display-6">{{ total_approved }}</div>
+        </div>
+        <span class="badge bg-success badge-pill">Approved</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-soft p-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="fw-bold">Pending</div>
+          <div class="display-6">{{ total_pending }}</div>
+        </div>
+        <span class="badge bg-warning text-dark badge-pill">Pending</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4 card card-soft p-3">
+  <div class="d-flex align-items-center gap-2">
+    <h4 class="mb-0">Latest Pending</h4>
+    {% if new_count and new_count|int > 0 %}
+      <span class="badge bg-danger badge-pill">New: {{ new_count }}</span>
+      <script>document.addEventListener('DOMContentLoaded', () => showToast('New member registrations pending approval!', 'bg-danger'));</script>
+    {% endif %}
+    <a href="{{ url_for('admin_members', status='pending') }}" class="ms-auto btn btn-egup btn-sm">Review All</a>
+  </div>
+  <div class="table-responsive mt-2">
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr><th>#</th><th>Name</th><th>Phone</th><th>Departments</th><th>Registered</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for m in latest_pending %}
+        <tr>
+          <td>{{ m.id }}</td>
+          <td>{{ m.name }}</td>
+          <td>{{ m.phone }}</td>
+          <td>{{ m.departments }}</td>
+          <td>{{ m.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin_approve', member_id=m.id) }}" class="d-inline">
+              <button class="btn btn-egup btn-sm">Approve</button>
+            </form>
+            <a class="btn btn-outline-egup btn-sm" href="{{ url_for('admin_print', member_id=m.id) }}">Print</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-muted">No pending members.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

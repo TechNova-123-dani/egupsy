@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex gap-2 mb-3">
+  <a class="btn btn-egup" href="{{ url_for('admin_members', status='all') }}">All</a>
+  <a class="btn btn-egup" href="{{ url_for('admin_members', status='approved') }}">Approved</a>
+  <a class="btn btn-egup" href="{{ url_for('admin_members', status='pending') }}">Pending</a>
+</div>
+
+<div class="card card-soft p-3">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>#</th><th>Name</th><th>Phone</th><th>Profession</th><th>Departments</th><th>Status</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in members %}
+        <tr>
+          <td>{{ m.id }}</td>
+          <td>{{ m.name }}</td>
+          <td>{{ m.phone }}</td>
+          <td>{{ m.profession }}</td>
+          <td>{{ m.departments }}</td>
+          <td>
+            {% if m.approved %}
+              <span class="badge bg-success">Approved</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Pending</span>
+            {% endif %}
+          </td>
+          <td class="d-flex gap-2">
+            {% if not m.approved %}
+            <form method="POST" action="{{ url_for('admin_approve', member_id=m.id) }}">
+              <button class="btn btn-egup btn-sm">Approve</button>
+            </form>
+            {% endif %}
+            <a class="btn btn-outline-egup btn-sm" href="{{ url_for('admin_print', member_id=m.id) }}">Print</a>
+            <form method="POST" action="{{ url_for('admin_delete', member_id=m.id) }}" onsubmit="return confirm('Delete member?');">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="text-center text-muted">No members found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
